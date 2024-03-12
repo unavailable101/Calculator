@@ -7,10 +7,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Stack;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
     //numbers
     Button btnOne, btnTwo, btnThree, btnFour, btnFive, btnSix, btnSeven, btnEight, btnNine, btnZero, btnZero2;
@@ -20,12 +19,6 @@ public class MainActivity extends AppCompatActivity {
 
     //clear, all clear, and backspace
     Button btnC, btnAC, btnBS, btnPeriod;
-
-//    List<Button> numbers;
-//    List<Button> ops;
-//    Button[] numbers = new Button[12];
-//    Button[] ops = new Button[5];
-
     private static final int[] nums_ID = {
             R.id.one,
             R.id.two,
@@ -47,267 +40,360 @@ public class MainActivity extends AppCompatActivity {
             R.id.plus,
             R.id.equals
     };
-
-    String input;
-
     TextView output;
+    TextView result;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        //number buttons
+        //assign all buttons by their respective findviewbyid
+        //numbers first
         btnOne = (Button) findViewById(nums_ID[0]);
+        btnTwo = (Button) findViewById(nums_ID[1]);
+        btnThree = (Button) findViewById(nums_ID[2]);
+        btnFour = (Button) findViewById(nums_ID[3]);
+        btnFive = (Button) findViewById(nums_ID[4]);
+        btnSix = (Button) findViewById(nums_ID[5]);
+        btnSeven = (Button) findViewById(nums_ID[6]);
+        btnEight = (Button) findViewById(nums_ID[7]);
+        btnNine = (Button) findViewById(nums_ID[8]);
+        btnZero = (Button) findViewById(nums_ID[9]);
+        btnZero2 = (Button) findViewById(nums_ID[10]);
+
+        //operations
+        btnDivide = (Button) findViewById(ops_ID[0]);
+        btnMultiply = (Button) findViewById(ops_ID[1]);
+        btnMinus = (Button) findViewById(ops_ID[2]);
+        btnPlus = (Button) findViewById(ops_ID[3]);
+        btnEquals = (Button) findViewById(ops_ID[4]);
+
+        //excess buttons
+        btnAC = (Button) findViewById(R.id.allClear);
+        btnC = (Button) findViewById(R.id.clear);
+        btnBS = (Button) findViewById(R.id.backspace);
+        btnPeriod = (Button) findViewById(R.id.period);
+
+
+        //for textviews
+        output = (TextView) findViewById(R.id.view);
+        result = (TextView) findViewById(R.id.result);
+        result.setText(null);
+
         btnOne.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                output = (TextView) findViewById(R.id.textView);
-                input = "1";
-                output.setText(output.getText() + input);
+                output.setText(output.getText() + "" +  btnOne.getText());
+                initialResult(String.valueOf(output.getText()));
             }
         });
-        btnTwo = (Button) findViewById(nums_ID[1]);
         btnTwo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                output = (TextView) findViewById(R.id.textView);
-                input = "2";
-                output.setText(output.getText() + input);
+                output.setText(output.getText()  + "" +  btnTwo.getText());
+                initialResult(String.valueOf(output.getText()));
             }
         });
-        btnThree = (Button) findViewById(nums_ID[2]);
         btnThree.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                output = (TextView) findViewById(R.id.textView);
-                input = "3";
-                output.setText(output.getText() + input);
+                output.setText(output.getText()  + "" +  btnThree.getText());
+                initialResult(String.valueOf(output.getText()));
             }
         });
-        btnFour = (Button) findViewById(nums_ID[3]);
         btnFour.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                output = (TextView) findViewById(R.id.textView);
-                input = "4";
-                output.setText(output.getText() + input);
+                output.setText(output.getText() + "" +  btnFour.getText());
+                initialResult(String.valueOf(output.getText()));
             }
         });
-        btnFive = (Button) findViewById(nums_ID[4]);
         btnFive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                output = (TextView) findViewById(R.id.textView);
-                input = "5";
-                output.setText(output.getText() + input);
+                output.setText(output.getText()  + "" +  btnFive.getText());
+                initialResult(String.valueOf(output.getText()));
             }
         });
-        btnSix = (Button) findViewById(nums_ID[5]);
         btnSix.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                output = (TextView) findViewById(R.id.textView);
-                input = "6";
-                output.setText(output.getText() + input);
+                output.setText(output.getText()  + "" +  btnSix.getText());
+                initialResult(String.valueOf(output.getText()));
             }
         });
-        btnSeven = (Button) findViewById(nums_ID[6]);
         btnSeven.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                output = (TextView) findViewById(R.id.textView);
-                input = "7";
-                output.setText(output.getText() + input);
+                output.setText(output.getText()  + "" +  btnSeven.getText());
+                initialResult(String.valueOf(output.getText()));
             }
         });
-        btnEight = (Button) findViewById(nums_ID[7]);
         btnEight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                output = (TextView) findViewById(R.id.textView);
-                input = "8";
-                output.setText(output.getText() + input);
+                output.setText(output.getText() + "" +  btnEight.getText());
+                initialResult(String.valueOf(output.getText()));
             }
         });
-        btnNine = (Button) findViewById(nums_ID[8]);
         btnNine.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                output = (TextView) findViewById(R.id.textView);
-                input = "9";
-                output.setText(output.getText() + input);
+                output.setText(output.getText()  + "" +  btnNine.getText());
+                initialResult(String.valueOf(output.getText()));
             }
         });
-        btnZero = (Button) findViewById(nums_ID[9]);
         btnZero.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                output = (TextView) findViewById(R.id.textView);
-                input = "0";
-                output.setText(output.getText() + input);
+                output.setText(output.getText()  + "" +  btnZero.getText());
+                initialResult(String.valueOf(output.getText()));
             }
         });
-        btnZero2 = (Button) findViewById(nums_ID[10]);
         btnZero2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                output = (TextView) findViewById(R.id.textView);
-                input = "00";
-                output.setText(output.getText() + input);
+                output.setText(output.getText()  + "" +  btnZero2.getText());
+                initialResult(String.valueOf(output.getText()));
             }
         });
 
         //ops buttons
-        btnDivide = (Button) findViewById(ops_ID[0]);
         btnDivide.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                output = (TextView) findViewById(R.id.textView);
-                input = "/";
-                output.setText(output.getText() + input);
+                String temp = String.valueOf(output.getText());
+                if (isOp(output.getText().charAt(output.getText().length()-1))) {
+                    temp = temp.substring(0, temp.length()-1) + btnDivide.getText();
+                }else{
+                    temp += btnDivide.getText();
+                }
+                output.setText(temp);
             }
         });
-        btnMultiply = (Button) findViewById(ops_ID[1]);
         btnMultiply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                output = (TextView) findViewById(R.id.textView);
-                input = "x";
-                output.setText(output.getText() + input);
+                String temp = String.valueOf(output.getText());
+                if (isOp(output.getText().charAt(output.getText().length()-1))) {
+                    temp = temp.substring(0, temp.length()-1) + btnMultiply.getText();
+                }else{
+                    temp += btnMultiply.getText();
+                }
+                output.setText(temp);
             }
         });
-        btnMinus = (Button) findViewById(ops_ID[2]);
         btnMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                output = (TextView) findViewById(R.id.textView);
-                input = "-";
-                output.setText(output.getText() + input);
+                String temp = String.valueOf(output.getText());
+                if (isOp(output.getText().charAt(output.getText().length()-1))) {
+                    temp = temp.substring(0, temp.length()-1) + btnMinus.getText();
+                }else{
+                    temp += btnMinus.getText();
+                }
+                output.setText(temp);
             }
         });
-        btnPlus = (Button) findViewById(ops_ID[3]);
         btnPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                output = (TextView) findViewById(R.id.textView);
-                input = "+";
-                output.setText(output.getText() + input);
+                String temp = String.valueOf(output.getText());
+                if (isOp(output.getText().charAt(output.getText().length()-1))) {
+                    temp = temp.substring(0, temp.length()-1) + btnPlus.getText();
+                }else{
+                    temp += btnPlus.getText();
+                }
+                output.setText(temp);
             }
         });
-        btnEquals = (Button) findViewById(ops_ID[4]);
         btnEquals.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Stack<Double> numbers = new Stack<>();
+                Stack<Character> operators = new Stack<>();
+
+                String exp = output.getText().toString();
+                StringBuilder num = new StringBuilder();
+
+                for (int i = 0; i<exp.length(); i++){
+                    char temp = exp.charAt(i);
+                    if (Character.isDigit(temp) || temp == '.'){
+                        while (i < exp.length() && (Character.isDigit(exp.charAt(i)) || exp.charAt(i) == '.')) {
+                            num.append(exp.charAt(i));
+                            i++;
+                        }
+                        i--;
+                        numbers.push(Double.parseDouble(num.toString()));
+                    } else {
+                        //assume na operators ang naa dire
+                        while (!operators.isEmpty() && (precedence(temp) <= precedence(operators.peek())) ) {
+                            performOperation(numbers, operators);
+                        }
+                        operators.push(temp);
+                    }
+                }
+                if (num.length() > 0) {
+                    numbers.push(Double.parseDouble(num.toString()));
+                }
+
+                while (!operators.isEmpty()) {
+                    performOperation(numbers, operators);
+                }
+                result.setText(Double.toString(numbers.pop()));
 
             }
+
+            private void performOperation(Stack<Double> nums, Stack<Character> ops) {
+                double num2 = nums.pop();
+                double num1 = nums.pop();
+                char op = ops.pop();
+
+                double result = 0;
+                switch (op) {
+                    case '+':
+                        result =  num1 + num2;
+                        break;
+                    case '-':
+                        result = num1 - num2;
+                        break;
+                    case '*':
+                        result = num1 * num2;
+                        break;
+                    case '/':
+                        result = num1 / num2;
+                        break;
+                }
+                nums.push(result);
+            }
+
+            private int precedence(char op) {
+                if (op == '+' || op == '-') {
+                    return 1;
+                } else if (op == '*' || op == '/') {
+                    return 2;
+                }
+                return 0;
+            }
+
         });
 
         //others all clear, clear, backspace
-        btnAC = (Button) findViewById(R.id.allClear);
         btnAC.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                input = "";
-                output.setText(input);
+                output.setText(null);
+                result.setText(null);
             }
         });
-        btnC = (Button) findViewById(R.id.clear);
         btnC.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                input = "";
-                output.setText(input);
+                output.setText(null);
+                result.setText(null);
             }
         });
-        btnBS = (Button) findViewById(R.id.backspace);
         btnBS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                String temp = String.valueOf(output.getText());
+                temp = temp.substring(0, temp.length()-1);
+                output.setText(temp);
             }
         });
-        btnPeriod = (Button) findViewById(R.id.period);
         btnPeriod.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                input = ".";
-                output.setText(output.getText() + input);
+                output.setText(output.getText()  + "" +  btnPeriod.getText());
+                initialResult(String.valueOf(output.getText()));
             }
         });
-        //for numbers create new buttons
-//        numbers = new ArrayList<>(nums_ID.length);
-//
-//        for(int id : nums_ID) {
-//            Button temp = (Button) findViewById(id);
-//            temp.setOnClickListener((View.OnClickListener) this);
-//            numbers.add(temp);
-//        }
+    }
 
-        //for operations create array button
-//        ops = new ArrayList<>(ops_ID.length);
-//
-//        for(int id : ops_ID){
-//            Button temp = (Button) findViewById(id);
-//            ops.add(temp);
-//        }
+    private boolean isOp(char c) {
+        switch(c){
+            case '+':
+            case '-':
+            case 'x':
+            case '/':
+                return true;
+        }
+        return false;
+    }
 
-//        for (int i = 0; i<12; i++){
-//            numbers[i] = (Button)findViewById(nums_ID[i]);
-//            numbers[i].setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    output = (TextView) findViewById(R.id.textView);
-//                    switch (view.getId()){
-//                        case R.id.one:
-//                            input.append("1");
-//                            output.setText(input.toString());
-//                            break;
-//                        case R.id.two:
-//                            input.append("2");
-//                            output.setText(input.toString());
-//                            break;
-//                        case R.id.three:
-//                            input.append("3");
-//                            output.setText(input.toString());
-//                            break;
-//                        case R.id.four:
-//                            input.append("4");
-//                            output.setText(input.toString());
-//                            break;
-//                        case R.id.five:
-//                            input.append("5");
-//                            output.setText(input.toString());
-//                            break;
-//                        case R.id.six:
-//                            input.append("6");
-//                            output.setText(input.toString());
-//                            break;
-//                        case R.id.seven:
-//                            input.append("7");
-//                            output.setText(input.toString());
-//                            break;
-//                        case R.id.eight:
-//                            input.append("8");
-//                            output.setText(input.toString());
-//                            break;
-//                        case R.id.nine:
-//                            input.append("9");
-//                            output.setText(input.toString());
-//                            break;
-//                        case R.id.zero:
-//                            input.append("0");
-//                            output.setText(input.toString());
-//                            break;
-//                        case R.id.doubleZero:
-//                            input.append("00");
-//                            output.setText(input.toString());
-//                            break;
-//                    }
-//                }
-//            });
-//        }
+    public void initialResult(String expression){
 
+        result = (TextView) findViewById(R.id.result);
+
+        Stack<Double> nums = new Stack<>();
+        Stack<Character> ops = new Stack<>();
+
+        StringBuilder num = new StringBuilder();
+
+        //sugod last pag read
+        //not using PEMDAS
+        for (int i = expression.length()-1; i >= 0; i--){
+            char temp = expression.charAt(i);
+            if (Character.isDigit(temp) || temp == '.'){
+                num.insert(0, expression.charAt(i));
+
+            } else {
+                if (num.length() != 0){
+                    nums.push(Double.valueOf(num.toString()));
+                    num.setLength(0);
+                }
+                //assume na operators ang naa dire
+                ops.push(temp);
+            }
+        }
+
+        //last number
+        if (num.length() != 0){
+            nums.push(Double.valueOf(num.toString()));
+            num.setLength(0);
+        }
+
+        double res = 0;
+        while (!ops.isEmpty()){
+
+            double num1 = nums.pop();
+            if (!nums.isEmpty()) {
+                double num2 = nums.pop();
+                char op = ops.pop();
+
+                switch (op){
+                    case '+':
+                        res = num1 + num2;
+                        break;
+                    case '-':
+                        res = num1 - num2;
+                        break;
+                    case 'x':
+                        res = num1 * num2;
+                        break;
+                    case '/':
+                        res = num1 / num2;
+                        break;
+                }
+                nums.push(res);
+            } else {
+                res += num1;
+            }
+        }
+        result.setText(Double.toString(res));
     }
 }
+
+//old codes that i dont like
+//boring
+//    void assignId(Button btn, int id){
+//        btn = (Button) findViewById(id);
+//        btn.setOnClickListener(this);
+//    }
+//    @Override
+//    public void onClick (View view){
+//        Button btn = (Button) view;
+//        input = btn.getText().toString();
+//        output.setText(input);
+//    }
