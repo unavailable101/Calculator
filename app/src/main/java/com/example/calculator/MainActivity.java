@@ -43,6 +43,9 @@ public class MainActivity extends AppCompatActivity{
     TextView output;
     TextView result;
 
+    Stack<Double> numbers = new Stack<>();
+    Stack<Character> operators = new Stack<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -211,14 +214,11 @@ public class MainActivity extends AppCompatActivity{
         btnEquals.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Stack<Double> numbers = new Stack<>();
-                Stack<Character> operators = new Stack<>();
-
                 String exp = output.getText().toString();
-                StringBuilder num = new StringBuilder();
 
                 for (int i = 0; i<exp.length(); i++){
                     char temp = exp.charAt(i);
+                    StringBuilder num = new StringBuilder();
                     if (Character.isDigit(temp) || temp == '.'){
                         while (i < exp.length() && (Character.isDigit(exp.charAt(i)) || exp.charAt(i) == '.')) {
                             num.append(exp.charAt(i));
@@ -228,55 +228,21 @@ public class MainActivity extends AppCompatActivity{
                         numbers.push(Double.parseDouble(num.toString()));
                     } else {
                         //assume na operators ang naa dire
-                        while (!operators.isEmpty() && (precedence(temp) <= precedence(operators.peek())) ) {
-                            performOperation(numbers, operators);
+                        while (!operators.isEmpty() && ( precedence(temp) <= precedence(operators.peek() ) ) ) {
+                            performOperation();
                         }
                         operators.push(temp);
                     }
                 }
-                if (num.length() > 0) {
-                    numbers.push(Double.parseDouble(num.toString()));
-                }
-
+//                if (num.length() > 0) {
+//                    numbers.push(Double.parseDouble(num.toString()));
+//                }
                 while (!operators.isEmpty()) {
-                    performOperation(numbers, operators);
+                    performOperation();
                 }
+//                output.setText(null);
                 result.setText(Double.toString(numbers.pop()));
-
             }
-
-            private void performOperation(Stack<Double> nums, Stack<Character> ops) {
-                double num2 = nums.pop();
-                double num1 = nums.pop();
-                char op = ops.pop();
-
-                double result = 0;
-                switch (op) {
-                    case '+':
-                        result =  num1 + num2;
-                        break;
-                    case '-':
-                        result = num1 - num2;
-                        break;
-                    case '*':
-                        result = num1 * num2;
-                        break;
-                    case '/':
-                        result = num1 / num2;
-                        break;
-                }
-                nums.push(result);
-            }
-
-            private int precedence(char op) {
-                if (op == '+' || op == '-') {
-                    return 1;
-                } else if (op == '*' || op == '/') {
-                    return 2;
-                }
-                return 0;
-            }
-
         });
 
         //others all clear, clear, backspace
@@ -298,6 +264,7 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 String temp = String.valueOf(output.getText());
+                if (temp.isEmpty()) return;
                 temp = temp.substring(0, temp.length()-1);
                 output.setText(temp);
             }
@@ -305,10 +272,34 @@ public class MainActivity extends AppCompatActivity{
         btnPeriod.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                output.setText(output.getText()  + "" +  btnPeriod.getText());
+                String temp = String.valueOf(output.getText());
+
+                if (hasPeriod(String.valueOf(output.getText()))){
+                    if (temp.charAt(temp.length()-1) == '.') {
+                        temp = temp.substring(0, temp.length()-1);
+                    }
+                    output.setText(temp);
+                    return;
+                }
+
+                if ( isOp(temp.charAt(temp.length()-1))){
+                    temp = temp + "0.";
+                }
+                else if (temp.charAt(temp.length()-1) == '.') {
+                    temp = temp.substring(0, temp.length()-1);
+                } else {
+                    temp += btnPeriod.getText();
+                }
+                output.setText(temp);
                 initialResult(String.valueOf(output.getText()));
             }
         });
+    }
+
+    private boolean hasPeriod(String valueOf) {
+        if (isOp(valueOf.charAt(valueOf.length()-1))) return false;
+        String[] temps = valueOf.split("[+\\-x/]");
+        return temps[temps.length - 1].contains(".");
     }
 
     private boolean isOp(char c) {
@@ -320,6 +311,52 @@ public class MainActivity extends AppCompatActivity{
                 return true;
         }
         return false;
+    }
+
+    private int precedence(char op) {
+        switch(op){
+            case '+':
+            case '-':
+                return 1;
+            case 'x':
+            case '/':
+                return 2;
+        }
+        return 0;
+    }
+
+
+    private void performOperation() {
+
+        if (numbers.size() < 2 || operators.isEmpty()){
+            return;
+        }
+
+        double num2 = numbers.pop();
+        double num1 = numbers.pop();
+        char op = operators.pop();
+
+        double res = 0;
+        switch (op) {
+            case '+':
+                res =  num1 + num2;
+                break;
+            case '-':
+                res = num1 - num2;
+                break;
+            case 'x':
+                res = num1 * num2;
+                break;
+            case '/':
+                try {
+                    res = num1 / num2;
+                } catch (ArithmeticException e){
+                    result = (TextView) findViewById(R.id.result);
+                    result.setText("Error");
+                }
+                break;
+        }
+        numbers.push(res);
     }
 
     public void initialResult(String expression){
@@ -373,7 +410,11 @@ public class MainActivity extends AppCompatActivity{
                         res = num1 * num2;
                         break;
                     case '/':
-                        res = num1 / num2;
+                        try{
+                            res = num1 / num2;
+                        } catch (ArithmeticException e){
+                            result.setText("");
+                        }
                         break;
                 }
                 nums.push(res);
