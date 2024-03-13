@@ -7,4 +7,12 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+<!--    light mode-->
+    <color name="pink">#F56EB3</color>
+    <color name="lavander">#7F167F</color>
+
+<!--    dark mode-->
+    <color name="dark_lavander">#3F0071</color>
+    <color name="hotpink">#FB2576</color>
 </resources>
