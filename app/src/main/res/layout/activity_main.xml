@@ -428,19 +428,19 @@
 
     <TextView
         android:id="@+id/result"
-        android:layout_width="0dp"
-        android:layout_height="131dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
+        android:layout_width="380dp"
+        android:layout_height="101dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:allowUndo="true"
-        android:autoSizeMaxTextSize="99sp"
-        android:autoSizeMinTextSize="82sp"
+        android:autoSizeMaxTextSize="80sp"
+        android:autoSizeMinTextSize="70sp"
         android:autoSizeTextType="uniform"
         android:ellipsize="end"
         android:maxHeight="99dp"
         android:minHeight="82dp"
         android:textAlignment="viewEnd"
-        android:textSize="34sp"
+        android:textSize="16sp"
         android:visibility="visible"
         app:layout_constrainedHeight="true"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -448,18 +448,18 @@
         app:layout_constraintHeight="99dp"
         app:layout_constraintHeight_max="99dp"
         app:layout_constraintHeight_min="82dp"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.523"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.205" />
+        app:layout_constraintVertical_bias="0.175" />
 
     <TextView
         android:id="@+id/view"
         android:layout_width="0dp"
         android:layout_height="54dp"
-        android:layout_marginStart="5dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="5dp"
+        android:layout_marginEnd="10dp"
         android:autoSizeMaxTextSize="54sp"
         android:autoSizeMinTextSize="40sp"
         android:autoSizeTextType="uniform"
@@ -467,7 +467,7 @@
         android:maxHeight="54dp"
         android:minHeight="40dp"
         android:textAlignment="viewEnd"
-        android:textSize="34sp"
+        android:textSize="14sp"
         app:layout_constrainedHeight="true"
         app:layout_constraintBottom_toTopOf="@+id/result"
         app:layout_constraintEnd_toEndOf="parent"
@@ -477,6 +477,6 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.545" />
+        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

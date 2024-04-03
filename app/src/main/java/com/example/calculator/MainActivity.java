@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity{
     Stack<Double> numbers = new Stack<>();
     Stack<Character> operators = new Stack<>();
 
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -229,7 +228,12 @@ public class MainActivity extends AppCompatActivity{
                     } else {
                         //assume na operators ang naa dire
                         while (!operators.isEmpty() && ( precedence(temp) <= precedence(operators.peek() ) ) ) {
-                            performOperation();
+                            try {
+                                performOperation();
+                            } catch (ArithmeticException e){
+                                result.setText(e.getMessage());
+                                return;
+                            }
                         }
                         operators.push(temp);
                     }
@@ -238,7 +242,12 @@ public class MainActivity extends AppCompatActivity{
 //                    numbers.push(Double.parseDouble(num.toString()));
 //                }
                 while (!operators.isEmpty()) {
-                    performOperation();
+                    try {
+                        performOperation();
+                    } catch (ArithmeticException e){
+                        result.setText(e.getMessage());
+                        return;
+                    }
                 }
 //                output.setText(null);
                 result.setText(Double.toString(numbers.pop()));
@@ -326,7 +335,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
 
-    private void performOperation() {
+    private void performOperation() throws ArithmeticException{
 
         if (numbers.size() < 2 || operators.isEmpty()){
             return;
@@ -348,13 +357,14 @@ public class MainActivity extends AppCompatActivity{
                 res = num1 * num2;
                 break;
             case '/':
-                try {
+                if (num2 == 0) {
+//                    result.setText("Math Error");
+//                    return;
+                    throw new ArithmeticException("Math Error");
+                } else {
                     res = num1 / num2;
-                } catch (ArithmeticException e){
-                    result = (TextView) findViewById(R.id.result);
-                    result.setText("Error");
+                    break;
                 }
-                break;
         }
         numbers.push(res);
     }
@@ -410,11 +420,11 @@ public class MainActivity extends AppCompatActivity{
                         res = num1 * num2;
                         break;
                     case '/':
-                        try{
-                            res = num1 / num2;
-                        } catch (ArithmeticException e){
-                            result.setText("");
+                        if(num2 == 0) {
+                            result.setText("Math Error");
+                            return;
                         }
+                        res = num1 / num2;
                         break;
                 }
                 nums.push(res);
@@ -422,6 +432,10 @@ public class MainActivity extends AppCompatActivity{
                 res += num1;
             }
         }
+        //pag print sa first number kng walay ops
+//        if (ops.isEmpty() && nums.size() == 1){
+//            res += nums.pop();
+//        }
         result.setText(Double.toString(res));
     }
 }
